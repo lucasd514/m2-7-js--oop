@@ -1,13 +1,35 @@
-// Exercise 1.4
-// ------------
-// Creating a Cat class - Part 4
+class Cat {
+  constructor(name, breed) {
+    this.species = "cat";
+    this.tiredness = 100;
+    this.hunger = 100;
+    this.loneliness = 50;
+    this.happiness = 50;
+    this.name = name;
+    this.breed = breed;
+  }
+  sleep = (hours) => {
+    this.tiredness -= hours * 5;
+    this.happiness += hours * 4;
+  };
 
-// A) So far so good.
-//    In real life, we naturally get more tired/hungry/lonely as time passes.
-//    Let's add a new method, `wait`. It accepts a number of minutes as the
-//    parameter. The cat's tiredness, hunger, and loneliness should increase
-//    as the amount of time increases. They should also become less happy.
-//
-//    It's up to you to decide how quickly these values should change.
+  eats = (kibbles) => {
+    (this.hunger -= kibbles * 0.2), (this.happiness += kibbles * 0.05);
+  };
 
-// B) Make Boots wait 20 minutes and call then console.log(boots);
+  play = (minutes) => {
+    this.loneliness -= 3 * minutes;
+    this.happiness += minutes * 0.25;
+  };
+
+  wait = (minutes) => {
+    this.tiredness += 0.2 * minutes;
+    this.loneliness += 0.05 * minutes;
+    this.hunger += 0.1 * minutes;
+    this.happiness -= 0.25 * minutes;
+  };
+}
+
+const boots = new Cat("boots", "siamese");
+boots.wait(60);
+console.log(boots); //all are modified with the functions that are rune
