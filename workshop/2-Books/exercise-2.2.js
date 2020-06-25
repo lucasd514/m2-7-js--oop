@@ -10,5 +10,9 @@
 // Console.log(homeLibrary) to verify that all is working.
 
 class BookList {
-  // Code here
+    this.books = []
+    this.lastRead = null
+    this.currentlyReading =null
 }
+
+const homeLibrary = new BookList()
