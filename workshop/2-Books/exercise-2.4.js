@@ -33,28 +33,93 @@ code runs well and produces the expected output.
 
 const homeLibrary = new BookList();
 
-homeLibrary.add(new Book('The Shining', 'Horror', 'Stephen King'));
-homeLibrary.add(new Book('American Gods', 'Fiction', 'Neil Gaiman'));
+homeLibrary.add(new Book("The Shining", "Horror", "Stephen King"));
+homeLibrary.add(new Book("American Gods", "Fiction", "Neil Gaiman"));
 homeLibrary.add(
-  new Book('Eloquent JavaScript', 'Programming', 'Marijn Haverbeke', true)
+  new Book("Eloquent JavaScript", "Programming", "Marijn Haverbeke", true)
 );
-homeLibrary.add(new Book('The Eire Affair', 'Fantasy', 'Jasper Fforde'));
+homeLibrary.add(new Book("The Eire Affair", "Fantasy", "Jasper Fforde"));
 homeLibrary.add(
-  new Book('The Revisionists', 'Science-fiction', 'thomas Mullen')
+  new Book("The Revisionists", "Science-fiction", "thomas Mullen")
 );
+class Book {
+  constructor(title, genre, author, isread) {
+    this.title = title;
+    this.genre = genre;
+    this.author = author;
+    this.isread = isread || false;
+  }
+}
 
-console.log('initial state', homeLibrary.currentlyReading); // should be The Shining book object
-console.log('initial last-read', homeLibrary.lastRead); // should be null
+class BookList {
+  constructor() {
+    this.books = [];
+    this.lastRead = null;
+    this.currentlyReading = null;
+  }
 
-homeLibrary.finishReading('The Shining');
+  newGuy = (book) => {
+    this.books.push(book);
+    if (this.currentlyReading === null) {
+      this.currentlyReading = book;
+    }
+  };
+
+  getNumRead = () => {
+    let booksRead = 0;
+    this.books.forEach((book) => {
+      if (book.isread === true) {
+        booksRead += 1;
+      }
+    });
+    return booksRead;
+  };
+
+  getNumUnread = () => {
+    let booksUnread = 0;
+    this.books.forEach((book) => {
+      if (book.isread === false) {
+        booksUnread += 1;
+      }
+    });
+    return booksUnread;
+  };
+
+  lookupBook(bookTitle) {
+    return this.books.find((book) => book.title === bookTitle);
+  }
+  startReading(bookTitle) {
+    this.currentlyReading = this.lookupBook(bookTitle);
+  }
+  finishReading(bookTitle) {
+    this.lastRead = this.lookupBook(bookTitle);
+    this.lastRead.isRead = true;
+    this.currentlyReading = null;
+  }
+}
+
+const homeLibrary = new BookList();
+homeLibrary.newGuy(new Book("Harry Potter", "fantasy", "JK Rowling", ""));
+homeLibrary.newGuy(
+  new Book("il gioco della pizza", "food", "Gabriele Bonci", true)
+);
+homeLibrary.newGuy(
+  new Book("Kansas City 1927", "sports", "Simone Conte", true)
+);
+homeLibrary.newGuy(new Book("Boomerang", "finance", "Michael Lews", true));
+homeLibrary.newGuy(new Book("My Life", "politics", "Bill Clinton", ""));
+console.log(homeLibrary.getNumRead());
+console.log(homeLibrary.getNumUnread());
+
+console.log("initial state", homeLibrary.currentlyReading); // should be The Shining book object
+console.log("initial last-read", homeLibrary.lastRead); // should be null
+
+homeLibrary.finishReading("Harry Potter");
 console.log(
-  'Currently reading, after finishing The Shining',
+  "Currently reading, after finishing harry potter",
   homeLibrary.currentlyReading
 ); // should be null
-console.log('Last-read, after finishing The Shining', homeLibrary.lastRead); // should be The Shining
+console.log("Last-read, after finishing harry potter", homeLibrary.lastRead); // should be The Shining
 
-homeLibrary.startReading('The Revisionists');
-console.log(
-  'Currentky reading, After starting The Revisionists',
-  homeLibrary.currentlyReading
-); // should be The Revisionists book
+homeLibrary.startReading("il gioco della pizza");
+console.log("Currentky reading, Bonci", homeLibrary.currentlyReading); // should be The Revisionists book
